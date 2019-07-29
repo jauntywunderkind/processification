@@ -2,9 +2,9 @@
 	"name": "processification",
 	"version": "1.0.0",
 	"description": "",
-	"main": "index.js",
+	"main": "processification.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"test": "node -r esm .test/index.js"
 	},
 	"repository": {
 		"type": "git",
@@ -14,5 +14,12 @@
 	"author": "jauntywunderkind",
 	"license": "MIT",
 	"module": "processification.js",
-	"esm": true
+	"esm": true,
+	"devDependencies": {
+		"esm": "^3.2.25",
+		"tape": "^4.11.0"
+	},
+	"dependencies": {
+		"p-immediate": "^3.1.0"
+	}
 }
