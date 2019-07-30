@@ -5,7 +5,7 @@ export function ProcessizeGenerator( generator){
 	return function( ...args){
 		const
 		  defer= Defer(),
-		  iterator= generator( defer, ...args)
+		  iterator= generator( defer.promise, ...args)
 		defer.resolve( iterator)
 		return iterator
 	}
