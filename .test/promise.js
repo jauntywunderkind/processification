@@ -1,12 +1,14 @@
 "use module"
 import tape from "tape"
-import { Promise} from "../promise.js"
+import Promise from "../promise.js"
 
 tape( "test promise", async function( t){
 	let p= new Promise( function( res){
-		res( 44)
+		this.name= "roland"
+		res( "hello")
 	})
+	t.equal( p.name, "roland", "constructor had a this context")
 	const pv= await p
-	console.log({pv})
+	t.equal( pv, "hello", "resolves as usual")
 	t.end()
 })
