@@ -1,7 +1,7 @@
 "use module"
 
 export class ProcessizedPromise extends Promise{
-	constructor( exec, wtf= 2+2){
+	constructor( exec){
 		let res, rej
 		super( function( _res, _rej){
 			res= _res
