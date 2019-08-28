@@ -1,6 +1,11 @@
 "use module"
 
+export function liftFunction( fn){
+	return
+}
+
 export class ProcessizedPromise extends Promise{
+	static [ Symbol.species]= Promise
 	constructor( exec){
 		let res, rej
 		super( function( _res, _rej){

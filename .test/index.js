@@ -1,3 +1,4 @@
 "use module"
 import {} from "./promise.js"
 import {} from "./generator.js"
+import {} from "./promise-extend.js"
