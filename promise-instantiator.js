@@ -1,20 +1,22 @@
 "use module"
-import ProcessizedPromise from "./promise.js"
+import ProcessizedPromise, { $swapThis} from "./promise.js"
 import promiseLift from "./promise-lift.js"
 import { makeGetSuffixedName} from "./suffix.js"
 
 export function promiseInstantiator( execFn, opts= {}){
+	// side effect!:
+	execFn[ $swapThis]= true
+
 	const
 	  name= opts.name|| execFn.name,
 	  instantiationClass= promiseLift( execFn),
-	  self= opts.this|| opts.state|| this,
 	  namingWrapper= {[ name]: function( ...opts){
 		if( instantiator.onarguments){
-			opts= instantiator.onarguments( opts, instantiator.this)
+			opts= instantiator.onarguments( opts, this)
 		}
-		const instance= new (instantiator.class)( instantiator.this, ...opts)
+		const instance= new (instantiator.class)( this, ...opts)
 		if( instantiator.oninstance){
-			instantiator.oninstance( instance, instantiator.this)
+			instantiator.oninstance( instance, this)
 		}
 		return instance
        }},
@@ -22,7 +24,7 @@ export function promiseInstantiator( execFn, opts= {}){
 	instantiator.class= instantiationClass
 	instantiator.oninstance= opts.oninstance
 	instantiator.onarguments= opts.onarguments
-	instantiator.this= self
+	instantiator.state= opts.state
 	return instantiator
 }
 export {

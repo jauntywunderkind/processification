@@ -4,11 +4,11 @@ import promiseInstantiator from "../promise-instantiator.js"
 import delay from "delay"
 
 tape( "test promise-instantiator", async function( t){
-	async function Rolander( res, rej, greeting){
-		this.ourName= "roland"
+	async function Rolander( res, rej, self, greeting){
+		self.ourName= "roland"
 		res( "hello")
 		await delay( 8)
-		this.greeting= "hello"
+		self.greeting= "hello"
 	}
 
 	const
@@ -36,23 +36,20 @@ tape( "test promise-instantiator-ed field", async function( t){
 	class Foo{
 		color= "red"
 		constructor(){
-			this.bar= promiseInstantiator( this.bar, {this: this}) // ahhh frelll
+			this.bar= promiseInstantiator( this.bar) // ahhh frelll
 		}
 		async bar( res, rej, self, greeting= "sup?"){
-			this.ourName= "roland" // this is the returned promise, our quasi arguments.callee
-			self.color= "green" // self is the foo instance
+			this.color= "green" // this is still this
+			self.ourName= "roland" // self is our promise instance
 			res( "hello")
 		}
 	}
 
-	const
-	  foo= new Foo(),
-	  bar= foo.bar // it's bound via state
-	t.equal( bar.this, foo, "bar's this is foo")
+	const foo= new Foo()
+	t.equal( foo.color, "red", "foo's color starts red")
 
 	// run
-	t.equal( foo.color, "red", "foo's color starts red")
-	const b= bar()
+	const b= foo.bar()
 	t.equal( foo.color, "green", "foo's color goes green")
 	t.equal( b.ourName, "roland", "promise has ourName")
 

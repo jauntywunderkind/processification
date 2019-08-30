@@ -1,6 +1,8 @@
 "use module"
 
-export const $deferrable= Symbol.for( "processification:deferrable")
+export const
+  $deferrable= Symbol.for( "processification:deferrable"),
+  $swapThis= Symbol.for( "processification:swapThis")
 
 export class ProcessizedPromise extends Promise{
 	static [ Symbol.species]= Promise
@@ -10,12 +12,19 @@ export class ProcessizedPromise extends Promise{
 			res= _res
 			rej= _rej
 		})
-		if( !exec[ $deferrable]){
-			exec.call( this, res, rej, ...args)
-		}else{
+		if( exec[ $deferrable]){
 			this.resolve= res
 			this.reject= rej
-			exec.call( this, ...args)
+		}
+		let self= this
+		if( exec[ $swapThis]){
+			self= args[ 0]
+			args[ 0]= this;
+		}
+		if( !exec[ $deferrable]){
+			exec.call( self, res, rej, ...args)
+		}else{
+			exec.call( self, ...args)
 		}
 		return this
 	}
