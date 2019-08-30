@@ -19,7 +19,6 @@ export class ProcessizedPromise extends Promise{
 		}
 		return this
 	}
-
 }
 export {
 	ProcessizedPromise as default,

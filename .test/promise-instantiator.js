@@ -30,3 +30,34 @@ tape( "test promise-instantiator", async function( t){
 	t.equal( instantiator.class.name, "RolanderPromise", "instantiator knows class")
 	t.end()
 })
+
+
+tape( "test promise-instantiator-ed field", async function( t){
+	class Foo{
+		color= "red"
+		constructor(){
+			this.bar= promiseInstantiator( this.bar, {state: this}) // ahhh frelll
+		}
+		async bar( res, rej, self, greeting= "sup?"){
+			this.ourName= "roland" // this is the returned promise, our quasi arguments.callee
+			self.color= "green" // self is the foo instance
+			res( "hello")
+		}
+	}
+
+	const
+	  foo= new Foo(),
+	  bar= foo.bar // it's bound via state
+	t.equal( bar.state, foo, "bar's state is foo")
+
+	// run
+	t.equal( foo.color, "red", "foo's color starts red")
+	const b= bar()
+	t.equal( foo.color, "green", "foo's color goes green")
+	t.equal( b.ourName, "roland", "promise has ourName")
+
+	// post run
+	const bv= await b
+	t.equal( bv, "hello", "resolves as usual")
+	t.end()
+})
