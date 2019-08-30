@@ -7,23 +7,22 @@ export function promiseInstantiator( execFn, opts= {}){
 	const
 	  name= opts.name|| execFn.name,
 	  instantiationClass= promiseLift( execFn),
+	  self= opts.this|| opts.state|| this,
 	  namingWrapper= {[ name]: function( ...opts){
-		let instance;
-		if( instantiator.state){
-			// execFn's this will be the promise instance, but also give it access to instantiator.this
-			instance= new (instantiator.class)( instantiator.state, ...opts)
-		}else{
-			instance= new (instantiator.class)( ...opts)
+		if( instantiator.onarguments){
+			opts= instantiator.onarguments( opts, instantiator.this)
 		}
+		const instance= new (instantiator.class)( instantiator.this, ...opts)
 		if( instantiator.oninstance){
-			instantiator.oninstance( instance)
+			instantiator.oninstance( instance, instantiator.this)
 		}
 		return instance
        }},
 	  instantiator= namingWrapper[ name]
 	instantiator.class= instantiationClass
 	instantiator.oninstance= opts.oninstance
-	instantiator.state= opts.state
+	instantiator.onarguments= opts.onarguments
+	instantiator.this= self
 	return instantiator
 }
 export {
