@@ -16,6 +16,7 @@
 	"module": "processification.js",
 	"esm": true,
 	"devDependencies": {
+		"delay": "^4.3.0",
 		"esm": "^3.2.25",
 		"tape": "^4.11.0"
 	},

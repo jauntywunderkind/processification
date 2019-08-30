@@ -9,7 +9,7 @@ export function makeGetSuffixedName( suffix= "Promise"){
 	}
 	return getSuffixedName
 }
-export const getSuffixedName= makeGetSuffixedName( "promise")
+export const getSuffixedName= makeGetSuffixedName( "Promise")
 export {
 	getSuffixedName as default
 }
