@@ -1,12 +1,6 @@
 "use module"
 import ProcessizedPromise from "./promise.js"
-
-export function getSuffixedName( name, suffix= "Promise"){
-	if( !name.endsWith( suffix)){
-		return name+ suffix
-	}
-	return name
-}
+import getSuffixedName from "./suffix.js"
 
 /**
 * Lift a function into a promise implementation
