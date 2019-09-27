@@ -3,30 +3,30 @@ import ProcessizedPromise, { $swapThis} from "./promise.js"
 import promiseLift from "./promise-lift.js"
 import { makeGetSuffixedName} from "./suffix.js"
 
-export function promiseInstantiator( execFn, opts= {}){
+export function liftAsync( execFn, opts= {}){
 	// side effect!:
 	execFn[ $swapThis]= true
 
 	const
 	  name= opts.name|| execFn.name,
 	  instantiationClass= promiseLift( execFn),
-	  namingWrapper= {[ name]: function( ...opts){
-		if( instantiator.onarguments){
-			opts= instantiator.onarguments( opts, this)
+	  namingWrapper= {[ name]: function( ...args){
+		if( lifted.onarguments){
+			args= lifted.onarguments( args, this)
 		}
-		const instance= new (instantiator.class)( this, ...opts)
-		if( instantiator.oninstance){
-			instantiator.oninstance( instance, this)
+		const instance= new (lifted.class)( this, ...args)
+		if( lifted.oninstance){
+			lifted.oninstance( instance, this)
 		}
 		return instance
        }},
-	  instantiator= namingWrapper[ name]
-	instantiator.class= instantiationClass
-	instantiator.oninstance= opts.oninstance
-	instantiator.onarguments= opts.onarguments
-	instantiator.state= opts.state
-	return instantiator
+	  lifted= namingWrapper[ name]
+	lifted.class= instantiationClass
+	lifted.oninstance= opts.oninstance
+	lifted.onarguments= opts.onarguments
+	lifted.state= opts.state
+	return lifted
 }
 export {
-	promiseInstantiator as default
+	liftAsync as default
 }
