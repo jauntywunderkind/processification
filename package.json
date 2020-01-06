@@ -1,6 +1,6 @@
 {
 	"name": "processification",
-	"version": "1.1.0",
+	"version": "1.1.1",
 	"description": "",
 	"main": "processification.js",
 	"scripts": {
@@ -14,6 +14,7 @@
 	"author": "jauntywunderkind",
 	"license": "MIT",
 	"module": "processification.js",
+	"type": "module",
 	"esm": true,
 	"devDependencies": {
 		"delay": "^4.3.0",
