@@ -3,7 +3,7 @@ import ProcessizedPromise, { $swapThis} from "./promise.js"
 import promiseLift from "./promise-lift.js"
 import { makeGetSuffixedName} from "./suffix.js"
 
-export function liftAsync( execFn, opts= {}){
+export function asyncLift( execFn, opts= {}){
 	// side effect!:
 	execFn[ $swapThis]= true
 
@@ -28,5 +28,5 @@ export function liftAsync( execFn, opts= {}){
 	return lifted
 }
 export {
-	liftAsync as default
+	asyncLift as default
 }
